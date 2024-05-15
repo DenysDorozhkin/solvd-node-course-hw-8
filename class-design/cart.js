@@ -1,3 +1,4 @@
+import { User } from "./user.js";
 // Represents a shopping cart for a user to add and remove books.
 export class Cart {
   /*
@@ -5,8 +6,36 @@ export class Cart {
     @param {User} user - The user associated with the cart.
   */
   constructor(user) {
-    this.user = user;
-    this.items = [];
+    this._user = user;
+    this._items = [];
+  }
+
+  /*
+  Gets the user of the cart.
+    @returns {User} - User of the cart.
+  */
+  get user() {
+    return this._user;
+  }
+
+  /*
+  Sets the user of the cart.
+    @param {User} value - User of the cart.
+  */
+  set user(user) {
+    if (!user instanceof User) {
+      console.log("User must be instance of User.");
+      return;
+    }
+    this._user = user;
+  }
+
+  /*
+  Gets the books of the cart.
+    @returns {array<Book>} - Books of the cart.
+  */
+  get items() {
+    return this._items;
   }
 
   /*
@@ -18,7 +47,7 @@ export class Cart {
       console.log(`${book.title} is not available now!`);
       return;
     }
-    this.items.push(book);
+    this._items.push(book);
   }
 
   /*
@@ -26,9 +55,9 @@ export class Cart {
     @param {Book} book - The book to remove from the cart.
   */
   removeBook(book) {
-    const index = this.items.indexOf(book);
+    const index = this._items.indexOf(book);
     if (index !== -1) {
-      this.items.splice(index, 1);
+      this._items.splice(index, 1);
     }
   }
 
@@ -37,6 +66,6 @@ export class Cart {
     @returns {number} - The total price of all items in the cart.
   */
   calculateTotal() {
-    return this.items.reduce((total, book) => total + book.price, 0);
+    return this._items.reduce((total, book) => total + book.price, 0);
   }
 }

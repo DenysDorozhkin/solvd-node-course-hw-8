@@ -1,3 +1,4 @@
+import { User } from "./user.js";
 // Represents an order made by a user containing one or more books.
 export class Order {
   /*
@@ -6,9 +7,61 @@ export class Order {
     @param {Array<Book>} books - An array of books included in the order.
   */
   constructor(user, books) {
-    this.user = user;
-    this.books = books;
-    this.totalPrice = this.calculateTotalPrice();
+    this._user = user;
+    this._books = books;
+    this._totalPrice = this.calculateTotalPrice();
+  }
+
+  /*
+  Gets the user of the order.
+    @returns {User} - User of the order.
+  */
+  get user() {
+    return this._user;
+  }
+
+  /*
+  Sets the user of the order.
+    @param {User} value - User of the order.
+  */
+  set user(user) {
+    if (!user instanceof User) {
+      console.log("User must be instance of User.");
+      return;
+    }
+    this._user = user;
+  }
+
+  /*
+  Gets the books of the order.
+    @returns {array<Book>} - Books of the order.
+  */
+  get books() {
+    return this._books;
+  }
+
+  /*
+  Sets the books of the order.
+    @param {array<Book>} value - Books of the order.
+  */
+  set books(books) {
+    if (!Array.isArray(books)) {
+      console.log("Books must be an array.");
+      return;
+    }
+    if (books.length === 0) {
+      console.log("Books array must be not empty.");
+      return;
+    }
+    this._books = books;
+  }
+
+  /*
+  Gets the totalPrice of the order.
+    @returns {number} - Total price of the order.
+  */
+  get totalPrice() {
+    return this._totalPrice;
   }
 
   /*
@@ -16,13 +69,13 @@ export class Order {
     @returns {number} - The total price of the order.
   */
   calculateTotalPrice() {
-    return this.books.reduce((total, book) => total + book.price, 0);
+    return this._books.reduce((total, book) => total + book.price, 0);
   }
 
   // Applies a discount to the total price if the user is premium.
   applyDiscount() {
-    if (this.user.isPremium) {
-      this.totalPrice *= 0.9;
+    if (this._user.isPremium) {
+      this._totalPrice *= 0.9;
     }
   }
 }
